@@ -50,20 +50,16 @@ while (stackTop > 0)
     var cy = stackY[stackTop - 1];
 
     int[] order = { 0, 1, 2, 3 };
-    for (var i = 3; i > 0; i--)
-    {
-        var j = rng.Next(i + 1);
-        var tmp = order[i]; order[i] = order[j]; order[j] = tmp;
-    }
-    
+    rng.Shuffle(order);
+
     var found = false;
-    for (var d = 0; d < 4; d++)
+    foreach (var dir in order)
     {
-        var nx = cx + dx[order[d]];
-        var ny = cy + dy[order[d]];
+        var nx = cx + dx[dir];
+        var ny = cy + dy[dir];
         if (nx >= 0 && nx < cellW && ny >= 0 && ny < cellH && !visited[nx, ny])
         {
-            grid[cx * 2 + dx[order[d]], cy * 2 + dy[order[d]]] = CellType.Corridor;
+            grid[cx * 2 + dx[dir], cy * 2 + dy[dir]] = CellType.Corridor;
             grid[nx * 2, ny * 2] = CellType.Corridor;
             visited[nx, ny] = true;
             stackX[stackTop] = nx;
