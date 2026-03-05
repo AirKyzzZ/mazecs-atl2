@@ -147,15 +147,15 @@ void GenerateMaze(CellType[,] grid, int playerStartX, int playerStartY)
         rng.Shuffle(order);
         foreach (var dir in order)
         {
-            if( inMaze(x, dx[dir], width , out var nx) && 
-                inMaze(y, dy[dir], height, out var ny) && 
+            if( InMaze(x, dx[dir], width , out var nx) && 
+                InMaze(y, dy[dir], height, out var ny) && 
                 grid[nx, ny] == CellType.Wall)
             {
                 grid[(x + nx) / 2, (y + ny) / 2] = CellType.Corridor;
                 GenerateMazeRec(nx, ny);
             }
         }
-        bool inMaze(int val, int delta, int max, out int next)
+        bool InMaze(int val, int delta, int max, out int next)
         {
             next = val + delta * 2;
             return next >= 0 && next < max;
