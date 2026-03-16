@@ -7,7 +7,7 @@ public class Maze
     public Vec2d Size { get; }
     public Vec2d Exit { get; }
 
-    public Maze(MazeGen generator)
+    public Maze(IMazeGenerator generator)
     {
         _grid = generator.Generate();
         Size = generator.Size;

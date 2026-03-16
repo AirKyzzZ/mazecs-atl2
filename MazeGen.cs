@@ -1,6 +1,6 @@
 namespace Epsi.MazeCs;
 
-public class MazeGen(Vec2d size)
+public class MazeGen(Vec2d size) : IMazeGenerator
 {
     private static readonly int[][] Orders = [
         [0, 1, 2, 3], [0, 1, 3, 2], [0, 2, 1, 3], [0, 2, 3, 1], [0, 3, 1, 2], [0, 3, 2, 1],

@@ -22,10 +22,10 @@ const ConsoleColor PlayerColor      = ConsoleColor.Yellow;
 const ConsoleColor ExitColor        = ConsoleColor.Green;
 #endregion
 
+IController keyboard = new KeyboardController();
 var screen = new ConsoleScreen(new Vec2d(0, 3));
-var keyboard = new KeyboardController();
 var maze = new Maze(new MazeGen(size));
-var player = new Player(new Vec2d(0, 0), PlayerColor);
+var player = new Player(new Vec2d(0, 0), PlayerColor, keyboard);
 var mode = State.Playing;
 
 screen.Clear();
@@ -36,7 +36,7 @@ screen.DrawText(new Vec2d(0, screen.Offset.Y + maze.Size.Y), sInstructions, Inst
 
 while (mode == State.Playing)
 {
-    var (direction, quit) = keyboard.ReadInput();
+    var (moved, quit) = player.Update(maze, screen, CorridorColor);
 
     if (quit)
     {
@@ -44,9 +44,7 @@ while (mode == State.Playing)
         break;
     }
 
-    if (direction is null) continue;
-
-    if (player.TryMove(direction, maze, screen, CorridorColor) && player.IsOnExit(maze))
+    if (moved && player.IsOnExit(maze))
         mode = State.Won;
 }
 

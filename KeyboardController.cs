@@ -1,6 +1,6 @@
 namespace Epsi.MazeCs;
 
-public class KeyboardController
+public class KeyboardController : IController
 {
     private static readonly Dictionary<ConsoleKey, Vec2d> Directions = new()
     {
@@ -14,14 +14,14 @@ public class KeyboardController
         [ConsoleKey.RightArrow] = new( 1,  0),
     };
 
-    public (Vec2d? Direction, bool Quit) ReadInput()
+    public Vec2d? Direction { get; private set; }
+    public bool IsEscPressed { get; private set; }
+
+    public void ReadInput()
     {
         var key = Console.ReadKey(true).Key;
-
-        if (key == ConsoleKey.Escape)
-            return (null, true);
-
-        return (Directions.GetValueOrDefault(key), false);
+        IsEscPressed = key == ConsoleKey.Escape;
+        Direction = IsEscPressed ? null : Directions.GetValueOrDefault(key);
     }
 
     public void WaitForKey() => Console.ReadKey(true);
