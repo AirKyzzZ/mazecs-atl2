@@ -1,6 +1,6 @@
 namespace Epsi.MazeCs;
 
-public class ConsoleScreen(Vec2d offset)
+public class ConsoleScreen(Vec2d offset) : IGridDisplay
 {
     public Vec2d Offset { get; } = offset;
 

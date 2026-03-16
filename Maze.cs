@@ -19,7 +19,7 @@ public class Maze
     public bool IsWalkable(Vec2d pos) =>
         pos.InBounds(Size) && _grid[pos.X, pos.Y] != CellType.Wall;
 
-    public void Draw(ConsoleScreen screen, ConsoleColor wallColor, ConsoleColor corridorColor, ConsoleColor exitColor)
+    public void Draw(IGridDisplay display, ConsoleColor wallColor, ConsoleColor corridorColor, ConsoleColor exitColor)
     {
         for (var y = 0; y < Size.Y; y++)
             for (var x = 0; x < Size.X; x++)
@@ -31,7 +31,7 @@ public class Maze
                     CellType.Exit => ("★", exitColor),
                     _             => ("·", corridorColor)
                 };
-                screen.DrawCharAt(pos, ch, color);
+                display.DrawCharAt(pos, ch, color);
             }
     }
 }

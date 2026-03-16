@@ -7,7 +7,7 @@ public class Player(Vec2d position, ConsoleColor color, IController controller)
     public Vec2d Position { get; private set; } = position;
     public ConsoleColor Color { get; } = color;
 
-    public (bool Moved, bool Quit) Update(Maze maze, ConsoleScreen screen, ConsoleColor corridorColor)
+    public (bool Moved, bool Quit) Update(Maze maze, IGridDisplay display, ConsoleColor corridorColor)
     {
         controller.ReadInput();
 
@@ -17,24 +17,24 @@ public class Player(Vec2d position, ConsoleColor color, IController controller)
         if (controller.Direction is not { } direction)
             return (false, false);
 
-        return (TryMove(direction, maze, screen, corridorColor), false);
+        return (TryMove(direction, maze, display, corridorColor), false);
     }
 
-    private bool TryMove(Vec2d direction, Maze maze, ConsoleScreen screen, ConsoleColor corridorColor)
+    private bool TryMove(Vec2d direction, Maze maze, IGridDisplay display, ConsoleColor corridorColor)
     {
         var next = Position + direction;
 
         if (!maze.IsWalkable(next))
             return false;
 
-        screen.DrawCharAt(Position, "·", corridorColor);
+        display.DrawCharAt(Position, "·", corridorColor);
         Position = next;
-        Draw(screen);
+        Draw(display);
         return true;
     }
 
     public bool IsOnExit(Maze maze) => Position == maze.Exit;
 
-    public void Draw(ConsoleScreen screen) =>
-        screen.DrawCharAt(Position, Symbol, Color);
+    public void Draw(IGridDisplay display) =>
+        display.DrawCharAt(Position, Symbol, Color);
 }
