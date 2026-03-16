@@ -2,7 +2,7 @@ namespace Epsi.MazeCs;
 
 public class Maze
 {
-    private readonly CellType[,] _grid;
+    private readonly Cell[,] _grid;
 
     public Vec2d Size { get; }
     public Vec2d Exit { get; }
@@ -14,24 +14,19 @@ public class Maze
         Exit = new Vec2d((Size.X - 1) & ~1, (Size.Y - 1) & ~1);
     }
 
-    public CellType this[Vec2d pos] => _grid[pos.X, pos.Y];
+    public Cell this[Vec2d pos] => _grid[pos.X, pos.Y];
 
     public bool IsWalkable(Vec2d pos) =>
-        pos.InBounds(Size) && _grid[pos.X, pos.Y] != CellType.Wall;
+        pos.InBounds(Size) && _grid[pos.X, pos.Y].IsWalkable;
 
-    public void Draw(IGridDisplay display, ConsoleColor wallColor, ConsoleColor corridorColor, ConsoleColor exitColor)
+    public void Draw(IGridDisplay display)
     {
         for (var y = 0; y < Size.Y; y++)
             for (var x = 0; x < Size.X; x++)
             {
                 var pos = new Vec2d(x, y);
-                var (ch, color) = _grid[x, y] switch
-                {
-                    CellType.Wall => ("█", wallColor),
-                    CellType.Exit => ("★", exitColor),
-                    _             => ("·", corridorColor)
-                };
-                display.DrawCharAt(pos, ch, color);
+                var cell = _grid[x, y];
+                display.DrawCharAt(pos, cell.Symbol, cell.Color);
             }
     }
 }

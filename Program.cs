@@ -16,10 +16,7 @@ const ConsoleColor SuccessColor     = ConsoleColor.Green;
 const ConsoleColor DangerColor      = ConsoleColor.Red;
 const ConsoleColor InfoColor        = ConsoleColor.Cyan;
 const ConsoleColor InstructionColor = ConsoleColor.DarkCyan;
-const ConsoleColor WallColor        = ConsoleColor.DarkGray;
-const ConsoleColor CorridorColor    = ConsoleColor.DarkBlue;
 const ConsoleColor PlayerColor      = ConsoleColor.Yellow;
-const ConsoleColor ExitColor        = ConsoleColor.Green;
 #endregion
 
 IController keyboard = new KeyboardController();
@@ -30,13 +27,13 @@ var mode = State.Playing;
 
 screen.Clear();
 screen.DrawBoxedText(new Vec2d(4, 0), sHeader, InfoColor);
-maze.Draw(screen, WallColor, CorridorColor, ExitColor);
+maze.Draw(screen);
 player.Draw(screen);
 screen.DrawText(new Vec2d(0, screen.Offset.Y + maze.Size.Y), sInstructions, InstructionColor);
 
 while (mode == State.Playing)
 {
-    var (moved, quit) = player.Update(maze, screen, CorridorColor);
+    var (moved, quit) = player.Update(maze, screen);
 
     if (quit)
     {
