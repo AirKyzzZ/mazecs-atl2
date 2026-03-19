@@ -1,6 +1,6 @@
 namespace Epsi.MazeCs;
 
-public class MazeGen(Vec2d size) : IMazeGenerator
+public class MazeGen(Vec2d size, double coinProbability = 0) : IMazeGenerator
 {
     private static readonly int[][] Orders = [
         [0, 1, 2, 3], [0, 1, 3, 2], [0, 2, 1, 3], [0, 2, 3, 1], [0, 3, 1, 2], [0, 3, 2, 1],
@@ -33,7 +33,11 @@ public class MazeGen(Vec2d size) : IMazeGenerator
 
     private void Carve(Cell[,] grid, int x, int y, Random rng)
     {
-        grid[x, y] = new Room();
+        var room = new Room();
+        if (coinProbability > 0 && rng.NextDouble() < coinProbability)
+            room.Item = new Coin();
+        grid[x, y] = room;
+
         foreach (var dir in Orders[rng.Next(Orders.Length)])
         {
             var nx = x + Dx[dir] * 2;

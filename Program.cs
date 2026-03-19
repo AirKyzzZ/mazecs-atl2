@@ -21,7 +21,7 @@ const ConsoleColor PlayerColor      = ConsoleColor.Yellow;
 
 IController keyboard = new KeyboardController();
 var screen = new ConsoleScreen(new Vec2d(0, 3));
-var maze = new Maze(new MazeGen(size));
+var maze = new Maze(new MazeGen(size, coinProbability: 0.3));
 var player = new Player(new Vec2d(0, 0), PlayerColor, keyboard);
 var mode = State.Playing;
 
