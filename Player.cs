@@ -66,6 +66,10 @@ public class Player(Vec2d position, ConsoleColor color, IController controller)
         if (!maze.IsWalkable(next))
             return false;
 
+        var target = maze[next];
+        if (target.RequiredItem is { } required && !_inventory.Contains(required))
+            return false;
+
         var cell = maze[Position];
         display.DrawCharAt(Position, cell.Symbol, cell.Color);
         Position = next;
