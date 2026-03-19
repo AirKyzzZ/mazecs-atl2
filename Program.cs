@@ -7,7 +7,7 @@ const int marginYMessage = 3;
 const int messageHeight = 5;
 
 const string sHeader = "🏃 LABYRINTHE ASCII  C# 🏃";
-const string sInstructions = "  [Z/↑] Haut   [S/↓] Bas   [Q/←] Gauche   [D/→] Droite   [Échap] Quitter";
+const string sInstructions = "  [Z/↑] Haut  [S/↓] Bas  [Q/←] Gauche  [D/→] Droite  [Espace] Ramasser  [Échap] Quitter";
 const string sWin = "🎉  FÉLICITATIONS ! Vous avez trouvé la sortie !";
 const string sCanceled = "\n  Partie abandonnée. À bientôt !";
 const string sPressKey = "  Appuyez sur une key pour quitter...";
@@ -24,6 +24,14 @@ var screen = new ConsoleScreen(new Vec2d(0, 3));
 var maze = new Maze(new MazeGen(size, coinProbability: 0.3));
 var player = new Player(new Vec2d(0, 0), PlayerColor, keyboard);
 var mode = State.Playing;
+
+var statusY = screen.Offset.Y + maze.Size.Y + 1;
+
+player.PointsChanged += points =>
+    screen.DrawText(new Vec2d(0, statusY), $"  Score : {points}     ", SuccessColor);
+
+player.InventoryChanged += item =>
+    screen.DrawText(new Vec2d(30, statusY), $"  Inventaire +{item.Symbol}  [{player.Inventory.Count}]     ", InfoColor);
 
 screen.Clear();
 screen.DrawBoxedText(new Vec2d(4, 0), sHeader, InfoColor);
@@ -45,7 +53,7 @@ while (mode == State.Playing)
         mode = State.Won;
 }
 
-var msgPos = new Vec2d(0, screen.Offset.Y + maze.Size.Y + marginYMessage);
+var msgPos = new Vec2d(0, statusY + marginYMessage);
 
 if (mode == State.Won)
     screen.DrawBoxedText(new Vec2d(4, msgPos.Y), sWin, SuccessColor);

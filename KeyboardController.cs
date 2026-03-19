@@ -16,12 +16,14 @@ public class KeyboardController : IController
 
     public Vec2d? Direction { get; private set; }
     public bool IsEscPressed { get; private set; }
+    public bool IsPickUpPressed { get; private set; }
 
     public void ReadInput()
     {
         var key = Console.ReadKey(true).Key;
         IsEscPressed = key == ConsoleKey.Escape;
-        Direction = IsEscPressed ? null : Directions.GetValueOrDefault(key);
+        IsPickUpPressed = key == ConsoleKey.Spacebar;
+        Direction = (IsEscPressed || IsPickUpPressed) ? null : Directions.GetValueOrDefault(key);
     }
 
     public void WaitForKey() => Console.ReadKey(true);
